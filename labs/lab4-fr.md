@@ -34,10 +34,14 @@ Soumettez votre charge utile malveillante via la page `add-product.jsp` et notez
 ### Étape 1 : Sanitiser les Entrées Utilisateur
 Mettez en œuvre la sanitisation des entrées dans `add-product.jsp` pour éliminer ou encoder les caractères spéciaux des entrées utilisateur avant leur traitement ou leur stockage. Pour cela, implémentez des requêtes préparées.
 
-``` PHP 
-// Préparer et lier
-$stmt = $conn->prepare("INSERT INTO product (libelle, category_id, description) VALUES (?, ?, ?)");
-$stmt->bind_param("sis", $libelle, $category_id, $description);
+``` Java
+String sql = "INSERT INTO product (libelle, category_id, description) VALUES (?, ?, ?)";
+pstmt = conn.prepareStatement(sql);
+
+// Setting parameters
+pstmt.setString(1, libelle);
+pstmt.setInt(2, Integer.parseInt(categoryId)); // Assuming category_id is an integer
+pstmt.setString(3, description);
 ```
 
 ### Étape 2 : Encoder la Sortie

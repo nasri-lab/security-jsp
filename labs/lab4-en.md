@@ -34,7 +34,7 @@ Submit your malicious payload through the `add-product.jsp` page and note its im
 ### Step 1: Sanitize User Input
 Implement input sanitization in `add-product.jsp` to strip or encode special characters from user inputs before processing or storing them. For this, implements prepared statements.
 
-``` JSP
+``` Java
 String sql = "INSERT INTO product (libelle, category_id, description) VALUES (?, ?, ?)";
 pstmt = conn.prepareStatement(sql);
 
