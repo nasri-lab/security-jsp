@@ -39,10 +39,11 @@ Modify the `index.jsp` (login script page) to generate a unique CSRF token upon 
 
 Here is an example for generating and storing CSRF token in `index.jsp`. **Be careful:** Only when the login succeeds.
 
-```php
-session_start();
-if (!isset($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+```Java
+// Ensure a session is started or existing session is used
+if (session.getAttribute("csrf_token") == null) {
+    String csrfToken = ""; // Generate a token
+    session.setAttribute("csrf_token", csrfToken);
 }
 ```
 
@@ -52,29 +53,40 @@ Before processing any form requests (e.g., in add-user.jsp), validate the CSRF t
 
 Example for validating CSRF token in add-user.jsp:
 
-```php
-session_start();
-if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-    die('CSRF token validation failed');
+```Java
+HttpSession session = request.getSession(false); // Get the current session without creating a new one
+String sessionCsrfToken = (String) session.getAttribute("csrf_token"); // Retrieve the CSRF token from the session
+String requestCsrfToken = request.getParameter("csrf_token"); // Get the CSRF token sent with the form
+
+// Check if the CSRF token is missing or doesn't match the session token
+if (sessionCsrfToken == null || requestCsrfToken == null || !sessionCsrfToken.equals(requestCsrfToken)) {
+    // CSRF token validation failed
+    response.sendError(HttpServletResponse.SC_FORBIDDEN, "CSRF token validation failed");
+    return; // Stop further processing
 }
+
+// If the code continues past this point, the CSRF token is valid
 ```
 
 ### Step 3: Modify Your Forms
 
 Ensure each form includes the CSRF token as a hidden input field. Start the PHP session at the beginning of each page or form where you need to access `$_SESSION` variables, and then use the stored CSRF token within your forms.
 
-```php
-<?php 
-    session_start();
-    $csrf_token = $_SESSION['csrf_token'];
-?>
-
-<form action="your_action.php" method="post">
+```Java
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%
+    HttpSession session = request.getSession(); // Ensure a session is started
+    String csrfToken = (String) session.getAttribute("csrf_token"); // Retrieve CSRF token from session
+%>
+```
+``` HTML
+<form action="your_action.jsp" method="post">
     <!-- Other form fields -->
     
-    <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>" />
+    <input type="hidden" name="csrf_token" value="<%= csrfToken %>" />
     
     <!-- Submit button -->
+    <input type="submit" value="Submit" />
 </form>
 ```
 
