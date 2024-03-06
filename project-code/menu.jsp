@@ -1,0 +1,1 @@
+<a href="categories.jsp">Products</a> - <a href="users.jsp">Users</a> - <a href="logout.jsp">Logout</a> 
