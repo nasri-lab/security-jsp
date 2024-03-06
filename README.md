@@ -22,9 +22,9 @@ To get started with the security lab project, follow these steps:
 2. Customize the **docker-compose.yml** file, particularly the following line:
     
 	```
-	/home/nasri/www/sql-injection:/var/www/html
+	/home/nasri/www/security-jsp:/usr/local/tomcat/webapps/ROOT/
 	```
-	Replace `/home/nasri/www/sql-injection` with the directory path where you have stored the source code on your local machine.
+	Replace `/home/nasri/www/security-jsp` with the directory path where you have stored the source code on your local machine.
 3. Run the project and proceed with the labs (refer to the **Lab** section for details).
 
 
