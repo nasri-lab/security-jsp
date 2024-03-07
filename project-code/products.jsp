@@ -18,6 +18,7 @@
     try {
     
         String sql = "SELECT * FROM product WHERE id_category = " + idCategory;
+        st = conn.createStatement();
         rs = st.executeQuery(sql);
 
         if (!rs.next()) {
