@@ -10,17 +10,15 @@
 <h1>Products</h1>
 
 <%
-    PreparedStatement pstmt = null;
+    Statement st = null;
     ResultSet rs = null;
 
     String idCategory = request.getParameter("category_id");
 
     try {
     
-        String sql = "SELECT * FROM product WHERE id_category = ?";
-        pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, idCategory);
-        rs = pstmt.executeQuery();
+        String sql = "SELECT * FROM product WHERE id_category = " + idCategory;
+        rs = st.executeQuery(sql);
 
         if (!rs.next()) {
             out.println("Aucun produit trouvé<br /><br />");
@@ -47,7 +45,7 @@
         e.printStackTrace();
     } finally {
         try { if (rs != null) rs.close(); } catch(Exception e) { e.printStackTrace(); }
-        try { if (pstmt != null) pstmt.close(); } catch(Exception e) { e.printStackTrace(); }
+        try { if (st != null) st.close(); } catch(Exception e) { e.printStackTrace(); }
         try { if (conn != null) conn.close(); } catch(Exception e) { e.printStackTrace(); }
     }
 %>
